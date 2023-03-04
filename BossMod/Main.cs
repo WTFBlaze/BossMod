@@ -65,8 +65,6 @@ public class Main : MelonMod {
 				stats.spreadSettings.useSpread = false;
 				stats.recoilSettings.recoilApplyHoldTicks = 0;
 				stats.recoilSettings.verticalRecoil = new(0, 0);
-				stats.handlingSettings.reloadFrames = 0;
-				stats.handlingSettings.autoReloadDelayTime = 0;
 
 				// Not sure if this even works, but why not?
 				stats.damageSettings.dropOff_1 = new Vector2Int(0, 0);
@@ -111,4 +109,6 @@ public class Main : MelonMod {
 			yield return new WaitForSeconds(0.01f);
 		}
 	}
+
+
 }
