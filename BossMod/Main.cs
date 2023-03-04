@@ -2,6 +2,7 @@
 using System.Linq;
 using CheetoClient;
 using MelonLoader;
+using Photon.Bolt;
 using UnityEngine;
 using Color = CheetoClient.Color;
 
@@ -10,14 +11,12 @@ using Color = CheetoClient.Color;
 
 namespace BossMod;
 
-public class Main : MelonMod
-{
+public class Main : MelonMod {
 	public static bool IsInGame;
 	public static GameObject Container;
 	public static Gamelogic GameLogic;
 
-	public override void OnPreSupportModule()
-	{
+	public override void OnPreSupportModule() {
 		Log.Level = Log.LogLevel.INFO;
 		Performance.ApplyTweaks();
 		ConsoleInitializer.Initialize();
@@ -25,13 +24,11 @@ public class Main : MelonMod
 		Log.Write("Testing Console Writing", Color.Crayola.Present.PigPink);
 	}
 
-	public override void OnInitializeMelon()
-	{
+	public override void OnInitializeMelon() {
 		HookManager.Initialize();
 	}
 
-	public override void OnSceneWasInitialized(int buildIndex, string sceneName)
-	{
+	public override void OnSceneWasInitialized(int buildIndex, string sceneName) {
 		Log.Write($"Scene Initialized: [{buildIndex}] '{sceneName}'");
 		switch (buildIndex) {
 			case 3:
@@ -40,26 +37,23 @@ public class Main : MelonMod
 		}
 	}
 
-	private IEnumerator OnGameInit()
-	{
+	private IEnumerator OnGameInit() {
 		while (GameUtils.Instance == null) yield return new WaitForSeconds(1f);
 		while (PlayerUtils.Self == null) yield return new WaitForSeconds(1f);
 		GameInitialized();
 	}
 
-	private void GameInitialized()
-	{
+	private void GameInitialized() {
 		Log.Write("Game Initialized");
 		MelonCoroutines.Start(WeaponModLoop());
+		MelonCoroutines.Start(GodModeLoop());
 	}
 
-	private IEnumerator WeaponModLoop()
-	{
+	private IEnumerator WeaponModLoop() {
 		Log.Write("Weapon Modifier Loop Started");
 		for (; ; )
 		{
-			if (PlayerUtils.Self == null)
-			{
+			if (PlayerUtils.Self == null) {
 				Log.Write($"Weapon Modifier Loop Stopped");
 				yield break;
 			}
@@ -81,6 +75,34 @@ public class Main : MelonMod
 			}
 
 			yield return new WaitForSeconds(1f); // I was lazy :)
+		}
+	}
+
+	private IEnumerator GodModeLoop()
+	{
+		//yield return new WaitForSeconds(5f); // Delay for now, otherwise it freezes on join
+		Log.Write("GodMode Loop Started");
+
+		for (; ; )
+		{
+			if (PlayerUtils.Self == null) {
+				Log.Write($"GodMode Loop Stopped");
+				yield break;
+			}
+
+			if (PlayerUtils.Self.prevHealth < 1000)
+			{
+				try {
+					var g = Resources.FindObjectsOfTypeAll<ItemPickup>().Where(e => e.cachedNameString.Contains("_HEALTH")).First();
+					if (g != null) {
+						g.OnPickedUp(PlayerUtils.Self);
+						g.OnInteract(PlayerUtils.Self.gameObject.GetComponent<BoltEntity>(), false);
+					}
+				}
+				catch { }
+			}
+
+			yield return new WaitForSeconds(1f);
 		}
 	}
 }
