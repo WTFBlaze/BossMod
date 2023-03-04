@@ -272,7 +272,7 @@ public static class Log
 				InternalWrite($"] ", Color.Random);
 
 				InternalWrite($"[", Color.Random);
-				InternalWrite($"CheetoClient", Color.CheetoOrange);
+				InternalWrite($"BossMod", Color.CheetoOrange);
 				InternalWrite($"] ", Color.Random);
 
 				InternalWrite($"[", Color.Random);
