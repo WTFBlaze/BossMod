@@ -38,6 +38,20 @@
       <HintPath>D:\SteamLibrary\steamapps\common\World Boss\MelonLoader\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\SteamLibrary\steamapps\common\VRChat\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\..\SteamLibrary\steamapps\common\VRChat\MelonLoader\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="bolt, Version=1.3.1.0, Culture=neutral, PublicKeyToken=null">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="bolt.user, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>D:\SteamLibrary\steamapps\common\World Boss\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
       <Private>False</Private>
@@ -123,6 +137,10 @@
     <Compile Include="BossMenu.cs" />
     <Compile Include="CheetoPatch.cs" />
     <Compile Include="Color.cs" />
+    <Compile Include="ESP.cs" />
+    <Compile Include="PlayerUtils.cs" />
+    <Compile Include="GameUtils.cs" />
+    <Compile Include="HookManager.cs" />
     <Compile Include="Logging\ConsoleInitializer.cs" />
     <Compile Include="Logging\ConsoleUtils.cs" />
     <Compile Include="Logging\Log.cs" />
@@ -132,6 +150,8 @@
     <Compile Include="Performance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizer.cs" />
+    <Compile Include="RenderManager.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
