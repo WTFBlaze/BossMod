@@ -78,6 +78,7 @@ public class Main : MelonMod {
 		}
 	}
 
+	private int _maxHealth = 1000;
 	private IEnumerator GodModeLoop()
 	{
 		//yield return new WaitForSeconds(5f); // Delay for now, otherwise it freezes on join
@@ -90,7 +91,12 @@ public class Main : MelonMod {
 				yield break;
 			}
 
-			if (PlayerUtils.Self.prevHealth < 1000)
+			if (PlayerUtils.Self.prevHealth > _maxHealth)
+			{
+				_maxHealth = PlayerUtils.Self.prevHealth;
+			}
+
+			if (PlayerUtils.Self.prevHealth < _maxHealth)
 			{
 				try {
 					var g = Resources.FindObjectsOfTypeAll<ItemPickup>().Where(e => e.cachedNameString.Contains("_HEALTH")).First();
@@ -102,7 +108,7 @@ public class Main : MelonMod {
 				catch { }
 			}
 
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.01f);
 		}
 	}
 }
