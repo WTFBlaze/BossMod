@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/BossMod/obj/Debug/BossMod.csproj.AssemblyReference.cache
