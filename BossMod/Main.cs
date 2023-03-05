@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Text;
 using CheetoClient;
 using MelonLoader;
 using Photon.Bolt;
@@ -26,6 +28,7 @@ public class Main : MelonMod {
 
 	public override void OnInitializeMelon() {
 		HookManager.Initialize();
+		AssemblyDump();
 	}
 
 	public override void OnSceneWasInitialized(int buildIndex, string sceneName) {
@@ -47,6 +50,7 @@ public class Main : MelonMod {
 		Log.Write("Game Initialized");
 		MelonCoroutines.Start(WeaponModLoop());
 		MelonCoroutines.Start(GodModeLoop());
+		MelonCoroutines.Start(TestLoop());
 	}
 
 	private IEnumerator WeaponModLoop() {
@@ -79,7 +83,6 @@ public class Main : MelonMod {
 	private int _maxHealth = 1000;
 	private IEnumerator GodModeLoop()
 	{
-		//yield return new WaitForSeconds(5f); // Delay for now, otherwise it freezes on join
 		Log.Write("GodMode Loop Started");
 
 		for (; ; )
@@ -110,5 +113,62 @@ public class Main : MelonMod {
 		}
 	}
 
+	private IEnumerator TestLoop() {
+		Log.Write("Test Loop Started");
 
+		for (; ; )
+		{
+			if (PlayerUtils.Self == null) {
+				Log.Write($"Test Loop Stopped");
+				yield break;
+			}
+
+			try {
+				try {
+				}
+				catch { }
+			}
+			catch { }
+
+			yield return new WaitForSeconds(0.01f);
+		}
+	}
+
+	public void AssemblyDump() {
+		if (!Directory.Exists("BossMod")) {
+			Directory.CreateDirectory("BossMod");
+		}
+		var buffer = new StringBuilder();
+
+		var assembly = System.Reflection.Assembly.GetAssembly(typeof(Gamelogic));
+		buffer.AppendLine($"Calling Assembly: {assembly.FullName}");
+		buffer.AppendLine($"{assembly.HostContext}");
+		foreach (var module in assembly.GetModules()) {
+			try {
+				buffer.AppendLine($"Module: {module.FullyQualifiedName}");
+
+				foreach (var type in module.GetTypes()) {
+					buffer.AppendLine($"Type: {type.FullName}");
+
+					foreach (var method in type.GetMethods()) {
+						buffer.AppendLine($"\tMethod: {method.ReturnType} {method.Name}");
+						foreach (var parameter in method.GetParameters()) {
+							buffer.AppendLine($"\t\tParameter: {parameter.Name} {parameter.ParameterType}");
+						}
+					}
+					foreach (var field in type.GetFields()) {
+						buffer.AppendLine($"\tField: {field.Name}");
+					}
+					foreach (var prop in type.GetProperties()) {
+						buffer.AppendLine($"\tProperty: {prop.Name}");
+					}
+				}
+			}
+			catch {
+			}
+		}
+
+		File.WriteAllText(@"BossMod\assemblies.txt", buffer.ToString());
+		//Environment.Exit(0);
+	}
 }

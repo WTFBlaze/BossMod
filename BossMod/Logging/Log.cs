@@ -14,7 +14,7 @@ public static class Log
 
 	private static bool _initialized;
 
-	private static readonly string _dataPath = Environment.CurrentDirectory + @"\CheetoClient";
+	private static readonly string _dataPath = Environment.CurrentDirectory + @"\BossMod";
 	private static readonly string _folderPath = _dataPath + @"\logs";
 
 	private static readonly string _logPath = _dataPath + @"\latest.log";
