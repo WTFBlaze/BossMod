@@ -52,6 +52,7 @@
     <Reference Include="bolt.user, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Private>False</Private>
     </Reference>
+    <Reference Include="EasyCharacterMovement.CharacterMovement, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Il2Cppmscorlib">
       <HintPath>D:\SteamLibrary\steamapps\common\World Boss\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
       <Private>False</Private>
@@ -138,6 +139,8 @@
     <Compile Include="CheetoPatch.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="ESP.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="MouseOperations.cs" />
     <Compile Include="PlayerUtils.cs" />
     <Compile Include="GameUtils.cs" />
     <Compile Include="HookManager.cs" />

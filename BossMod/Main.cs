@@ -6,6 +6,7 @@ using CheetoClient;
 using MelonLoader;
 using Photon.Bolt;
 using UnityEngine;
+using VRC.UI;
 using Color = CheetoClient.Color;
 
 [assembly: MelonInfo(typeof(BossMod.Main), "BossMod", "1.0.0", "WTFBlaze, Cheetos, Mora")]
@@ -28,7 +29,7 @@ public class Main : MelonMod {
 
 	public override void OnInitializeMelon() {
 		HookManager.Initialize();
-		AssemblyDump();
+		//AssemblyDump();
 	}
 
 	public override void OnSceneWasInitialized(int buildIndex, string sceneName) {
@@ -69,6 +70,8 @@ public class Main : MelonMod {
 				stats.spreadSettings.useSpread = false;
 				stats.recoilSettings.recoilApplyHoldTicks = 0;
 				stats.recoilSettings.verticalRecoil = new(0, 0);
+				stats.recoilSettings.recoilAddTime = 0;
+				stats.recoilSettings.recoilRecoverTime = 0;
 
 				// Not sure if this even works, but why not?
 				stats.damageSettings.dropOff_1 = new Vector2Int(0, 0);
@@ -113,8 +116,16 @@ public class Main : MelonMod {
 		}
 	}
 
+	private Camera _camera;
 	private IEnumerator TestLoop() {
 		Log.Write("Test Loop Started");
+		_camera = PlayerUtils.Self.weaponCamera;
+		var self = PlayerUtils.Self;
+
+		if (_camera == null)
+		{
+			Log.Warn($"Camera Not Found");
+		}
 
 		for (; ; )
 		{
@@ -124,13 +135,19 @@ public class Main : MelonMod {
 			}
 
 			try {
-				try {
+				int layerMask = LayerMask.NameToLayer("Character");
+				RaycastHit[] HitObjects = Physics.RaycastAll(_camera.transform.position, _camera.transform.forward);
+				foreach (RaycastHit hitObj in HitObjects)
+				{
+					if (hitObj.transform.name.Contains("Character") && hitObj.transform.name != self.name)
+					{
+						self.inputPoll.fire = true;
+					}
 				}
-				catch { }
 			}
 			catch { }
 
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForFixedUpdate();
 		}
 	}
 
